@@ -8,7 +8,7 @@ BUILDING
 
  # Use an OLD system for building (at least 2-3 years old)
  # to ensure the binaries run on older systems too
- sudo apt-get update ; sudo apt-get -y install libfuse-dev libglib2.0-dev cmake
+ sudo apt-get update ; sudo apt-get -y install libfuse-dev libglib2.0-dev cmake xorriso
  cd AppImageKit-master
  cmake .
  make
