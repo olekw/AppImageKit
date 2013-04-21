@@ -296,8 +296,8 @@ main (int argc, char *argv[])
 	/* open destination file */
         char mkcmd[FILE_MAX];
         char iconsdir[FILE_MAX];
-        sprintf(iconsdir, resulting);
-        sprintf(mkcmd, "mkdir -p '%s'", dirname(iconsdir));
+        sprintf(iconsdir, "%s", resulting);
+        sprintf(mkcmd, "mkdir -p '%i'", dirname(iconsdir));
         system(mkcmd);
 	if((to = fopen(resulting, "wb"))==NULL) {
 		printf("Cannot open %s for writing\n", resulting);
