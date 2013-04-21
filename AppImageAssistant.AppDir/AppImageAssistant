@@ -33,7 +33,7 @@ __version__="0.9.3"
 # Find out why it freezes on Fedora 12
 #
 
-import os, sys, gtk, vte
+import os, sys
 from locale import gettext as _
 
 import shutil
@@ -47,6 +47,11 @@ import commands
 import threading
 import glob
 
+if len(sys.argv) == 3:
+    os.system(os.path.dirname(__file__) + "/package %s %s" % (sys.argv[1], sys.argv[2]))
+    exit(0)
+
+import  gtk, vte
 import xdgappdir # bundled with this app
 import dialogs # part of kiwi; bundled with this app
 
@@ -166,16 +171,19 @@ class Assistant(gtk.Assistant):
         icon = gtk.Image()
         vbox.pack_start(icon, False, False, 0)
         vbox.show_all()
-        self.append_page(vbox)
+        scrolled = gtk.ScrolledWindow()
+        scrolled.add_with_viewport(vbox)
+        scrolled.show()
+        self.append_page(scrolled)
         self.set_page_header_image(vbox, gtk.gdk.pixbuf_new_from_file(application_icon))
         icon.show()
         filetype = Popen(["file", "-k", "-r", self.targetname], stdout=PIPE).communicate()[0]
         # print filetype
-        if "ISO 9660" in filetype and "32-bit LSB executable" in filetype:
+        if "ISO 9660" in filetype and "LSB executable" in filetype:
             icon.set_from_file(os.path.join(os.path.dirname(sys.argv[0]), "Gnome-emblem-default.png"))
             self.set_page_title(vbox, "Done")
             self.set_page_type(vbox, gtk.ASSISTANT_PAGE_SUMMARY)
-            basesystems = glob.glob('/cdrom/*.squashfs')
+            basesystems = glob.glob('/System/iso/*.iso')
             basesystems.append("/cdrom/casper/filesystem.squashfs")
             for basesystem in basesystems:
                 print basesystem
